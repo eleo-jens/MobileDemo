@@ -1,0 +1,22 @@
+.barre {
+    position: relative;
+}
+
+@keyframes barrer {
+    100% { width: 100%; }
+}
+
+// ajout d'un pseudo element: un faux element qui se met par dessus, permetde créer une animation barrée
+// on aurait pas su animer le text-decoration: line-through
+.barre::after {
+    content:'';
+    display: block;
+    height: 2px;
+    width: 0;
+    background-color: red;
+    position: absolute;
+    top: 50%;
+    animation-name: barrer;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}

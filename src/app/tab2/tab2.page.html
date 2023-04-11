@@ -1,17 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Scanner un produit
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding" [style.--background]="scanActive? 'transparent' : '#ffffff'"> 
+  <ion-button color="success" (click)="scan()">{{ scanActive ? 'Fermer' : 'Scanner un produit' }}</ion-button>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <!-- on affiche la card seulement si on a eu le résultat, autrement error dans console.log -->
+  <ion-card *ngIf="result && !scanActive">
+    <!-- le container ne s'affiche pas dans l'html, permet juste de faire un if pour les elements ci dessous -->
+    <ng-container *ngIf="result.product; else notFound">
+      <img [src] = "result.product.image_front_url">
+      <ion-card-header>
+        <ion-card-title>{{ result.product.product_name }}</ion-card-title>
+        <ion-card-subtitle>{{ result.product.brands | titlecase }}</ion-card-subtitle>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <ion-item>Allergènes: {{ result.product.allergens }} </ion-item>
+        <ion-item>Nutriscore: {{ result.product.nutriscore_data.grade | uppercase }}</ion-item>
+      </ion-card-content>
+    </ng-container>
+  </ion-card>
+
+  <ng-template #notFound>
+    <!-- remplace le contenu du notFound -->
+    <p>Produit inconnu</p>
+  </ng-template>
 </ion-content>
